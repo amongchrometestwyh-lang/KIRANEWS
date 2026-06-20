@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIRA NEWS | كيرا نيوز</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap');
+
+        :root {
+            --bg-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --accent: #ff2a2a; /* لون أحمر للأخبار العاجلة */
+            --border-light: rgba(0, 0, 0, 0.08);
+            --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* شريط الأخبار (Ticker) - الاحترافي */
+        .ticker-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--text-main);
+            color: #ffffff;
+            height: 45px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .breaking-badge {
+            background-color: var(--accent);
+            color: white;
+            font-weight: 900;
+            padding: 0 25px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+        }
+
+        .ticker-wrap {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker-scroll 35s linear infinite;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .ticker span.item {
+            margin: 0 15px;
+            opacity: 0.95;
+        }
+
+        .ticker span.divider {
+            color: var(--accent);
+            margin: 0 15px;
+            font-size: 1.2rem;
+        }
+
+        @keyframes ticker-scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* الرأس (Header) - تأثير الزجاج */
+        header {
+            padding: 50px 20px 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, #000000, #434343);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* شبكة الأخبار */
+        main {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 40px;
+        }
+
+        /* تصميم البطاقات الحديث (Glassmorphism & Shadows) */
+        .card {
+            background: var(--surface-color);
+            border-radius: 24px;
+            padding: 40px 35px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--text-main);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .category {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-main);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .card-title {
+            font-size: 1.7rem;
+            font-weight: 900;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .card-excerpt {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+            font-weight: 500;
+        }
+
+        .read-more-wrapper {
+            display: flex;
+            align-items: center;
+            font-weight: 900;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .read-more-wrapper .arrow {
+            margin-right: 12px;
+            transition: transform 0.4s ease;
+            font-size: 1.2rem;
+        }
+
+        .card:hover .arrow {
+            transform: translateX(-10px);
+        }
+
+        /* النافذة المنبثقة (Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: var(--surface-color);
+            padding: 60px;
+            border-radius: 30px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
+            transform: scale(0.9) translateY(30px);
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: #f1f1f1;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-body h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .modal-body p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        /* إخفاء المحتوى البرمجي */
+        .hidden-content { display: none; }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: #cccccc; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-main); }
+    </style>
+</head>
+<body>
+
+    <div class="ticker-container">
+        <div class="breaking-badge">عاجل</div>
+        <div class="ticker-wrap">
+            <div class="ticker">
+                
+                <span class="item">أهلاً بك في KIRA NEWS: يمكنك كتابة أي إعلان أو خبر خاص بك هنا بسهولة!</span>
+                <span class="divider">✦</span>
+                <span class="item">رسمياً: تركيا وروسيا ترفعان الحظر عن منصة روبلوكس وتعود للعمل</span>
+                <span class="divider">✦</span>
+                
+                <span class="item">مصر: ترقب لجلسة 21 يونيو الحاسمة لمناقشة مصير روبلوكس في المحاكم</span>
+                <span class="divider">✦</span>
+                
+                <span class="item">تحديث روبلوكس: إطلاق حسابات Kids و Select عالمياً لبيئة لعب آمنة</span>
+                <span class="divider">✦</span>
+
+            </div>
+        </div>
+    </div>
+    <header>
+        <h1>KIRA NEWS</h1>
+        <p>مصدرك الأول. بتصميم يليق بك.</p>
+    </header>
+
+    <main>
+        <div class="news-grid">
+
+            <article class="card" onclick="openModal('news-1')">
+                <div>
+                    <div class="card-meta">
+                        <span class="category">عالمي</span>
+                        <span class="date">يونيو 2026</span>
+                    </div>
+                    <h2 class="card-title">رسمياً: فك حظر روبلوكس في تركيا وروسيا</h2>
+                    <p class="card-excerpt">قرارات حكومية رسمية بعودة منصة الألعاب الشهيرة للعمل بشكل طبيعي بعد تحديث سياسات الأمان.</p>
+                </div>
+                <div class="read-more-wrapper">
+                    اقرأ التفاصيل <span class="arrow">←</span>
+                </div>
+
+                <div class="hidden-content" id="news-1-content">
+                    <div class="card-meta">
+                        <span class="category">عالمي</span>
+                        <span class="date">يونيو 2026</span>
+                    </div>
+                    <h2>رسمياً: فك حظر روبلوكس في تركيا وروسيا</h2>
+                    <p>في خطوة أسعدت ملايين اللاعبين، تم رسمياً فك الحظر عن منصة "روبلوكس" (Roblox) في كل من تركيا وروسيا، لتعود للعمل بكامل طاقتها بعد فترة من الإيقاف.</p>
+                    <p><strong>الوضع في تركيا:</strong> تم رفع الحظر وعودة المنصة للعمل يوم 18 يونيو 2026، وذلك بعد مفاوضات مكثفة. وافقت الشركة على الامتثال التام للقوانين المحلية وتحديث أدوات الرقابة الأبوية لتأمين بيئة اللعب.</p>
+                    <p><strong>الوضع في روسيا:</strong> سبقتها روسيا بفك الحظر يوم 10 يونيو 2026، بعد تأكد السلطات من تفعيل الشركة لأنظمة صارمة لتقييد المحتوى بناءً على العمر، مما أزال المخاوف المتعلقة بسلامة المستخدمين.</p>
+                </div>
+            </article>
+
+            <article class="card" onclick="openModal('news-2')">
+                <div>
+                    <div class="card-meta">
+                        <span class="category">محلي</span>
+                        <span class="date">21 يونيو 2026</span>
+                    </div>
+                    <h2 class="card-title">مصر: جلسة قضائية حاسمة لمناقشة مصير روبلوكس</h2>
+                    <p class="card-excerpt">المحاكم المصرية تنظر في دعوى قضائية هامة لمناقشة تأثير لعبة روبلوكس وإمكانية حظرها أو تقنينها.</p>
+                </div>
+                <div class="read-more-wrapper">
+                    اقرأ التفاصيل <span class="arrow">←</span>
+                </div>
+
+                <div class="hidden-content" id="news-2-content">
+                    <div class="card-meta">
+                        <span class="category">محلي</span>
+                        <span class="date">21 يونيو 2026</span>
+                    </div>
+                    <h2>مصر: جلسة قضائية حاسمة لمناقشة مصير روبلوكس</h2>
+                    <p>تتجه أنظار مجتمع اللاعبين والمهتمين بالتكنولوجيا في مصر إلى المحكمة في جلسة دعوى قضائية مصيرية تعقد يوم 21 يونيو 2026.</p>
+                    <p>تُناقش هذه الجلسة التحديات والمخاوف التي أثيرت مؤخراً حول منصة "روبلوكس" (Roblox) وتأثيرها النفسي والاجتماعي على الأطفال والمراهقين.</p>
+                    <p>سيتم بحث ما إذا كانت المنصة تحتاج إلى قيود إضافية، تنظيم حكومي، أو إذا كان سيصدر قرار بالحظر الشامل داخل الأراضي المصرية.</p>
+                </div>
+            </article>
+
+            <article class="card" onclick="openModal('news-3')">
+                <div>
+                    <div class="card-meta">
+                        <span class="category">تحديثات</span>
+                        <span class="date">16 يونيو 2026</span>
+                    </div>
+                    <h2 class="card-title">تحديث جديد للعبة روبلوكس يغير مستقبلها</h2>
+                    <p class="card-excerpt">إطلاق ميزات وتقسيمات عمرية جديدة لضمان أمان الأطفال والمراهقين على المنصة.</p>
+                </div>
+                <div class="read-more-wrapper">
+                    اقرأ التفاصيل <span class="arrow">←</span>
+                </div>
+
+                <div class="hidden-content" id="news-3-content">
+                    <div class="card-meta">
+                        <span class="category">تحديثات</span>
+                        <span class="date">16 يونيو 2026</span>
+                    </div>
+                    <h2>تحديث جديد للعبة روبلوكس يغير مستقبلها</h2>
+                    <p>تم إصدار وإطلاق تحديث حسابات Roblox Kids و Roblox Select رسمياً عالمياً في 16 يونيو 2026، وذلك بعد إطلاق تجريبي في دول مختارة بدأ في شهر أبريل من نفس العام.</p>
+                    <p>يقوم هذا التحديث بتقسيم المنصة إلى فئات وتجارب عمرية مختلفة لتوفير بيئة أكثر أماناً وتخصيصاً للاعبين بناءً على أعمارهم.</p>
+                    <p><strong>Roblox Kids (من 5 إلى 8 سنوات):</strong> تقتصر هذه الحسابات على الألعاب الآمنة المصنفة بمحتوى أدنى أو خفيف، وتكون ميزة الدردشة فيها معطلة بشكل افتراضي.</p>
+                    <p><strong>Roblox Select (من 9 إلى 15 عاماً):</strong> تتيح للمستخدمين الوصول إلى مكتبة أكبر من الألعاب وتُفَعّل الدردشة تدريجياً، مع وجود إشراف ورقابة أبوية صارمة.</p>
+                    <p><strong>Roblox (16+):</strong> حسابات المستخدمين الذين تبلغ أعمارهم 16 عاماً فأكثر والذين أكملوا التحقق من أعمارهم. يتمتع هؤلاء المستخدمون بتجربة روبلوكس الكاملة مع إمكانية الوصول إلى ميزات الدردشة ومشاركة الروابط.</p>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container" id="modalContainer">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <div class="modal-body" id="modalDynamicBody">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalDynamicBody = document.getElementById('modalDynamicBody');
+        const modalContainer = document.getElementById('modalContainer');
+
+        function openModal(newsId) {
+            const contentSource = document.getElementById(newsId + '-content');
+            if (contentSource) {
+                modalDynamicBody.innerHTML = contentSource.innerHTML;
+                modalOverlay.classList.add('active');
+                modalContainer.scrollTop = 0;
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            setTimeout(() => {
+                modalDynamicBody.innerHTML = '';
+            }, 500);
+        }
+
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
